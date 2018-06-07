@@ -616,7 +616,9 @@ class LtiConsumerXBlock(StudioEditableXBlockMixin, XBlock):
         """
 
         # parsing custom parameters to dict
-        custom_parameters = {}
+        custom_parameters = {
+            u'context_title': self.course.display_name, u'context_label': self.context_id.split('+')[1]
+        }
         if isinstance(self.custom_parameters, list):
             for custom_parameter in self.custom_parameters:
                 try:
