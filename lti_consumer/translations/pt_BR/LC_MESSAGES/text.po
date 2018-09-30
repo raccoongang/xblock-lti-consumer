@@ -1,4 +1,4 @@
-# 
+#
 # Translators:
 # Renata Barboza, 2016
 msgid ""
@@ -225,3 +225,7 @@ msgstr "Não foi possível analisar o parâmetro personalizado: {custom_paramete
 #: lti_consumer.py
 msgid "[LTI]: Real user not found against anon_id: {}"
 msgstr "[LTI]: usuário real não encontrado em anon_id: {}"
+
+
+msgid "Please provide launch_url. Click \"Edit\", and fill in the required fields."
+msgstr "Por favor, forneça o launch_url. Clique em \"Editar\" e preencha os campos obrigatórios."
