@@ -1,3 +1,6 @@
+<%
+from django.utils.translation import ugettext as _
+%>
 <h2 class="problem-header">
     ## Translators:  "External resource" means that this learning module is hosted on a platform external to the edX LMS
     ${display_name} (External resource)
@@ -74,7 +77,7 @@
     % endif
 % elif not hide_launch:
     <h3 class="error_message">
-        Please provide launch_url. Click "Edit", and fill in the required fields.
+        ${_("Please provide launch_url. Click \"Edit\", and fill in the required fields.")}
     </h3>
 % endif
 
