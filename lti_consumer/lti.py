@@ -149,6 +149,7 @@ class LtiConsumer(object):
         self.xblock.user_email = ""
         self.xblock.user_username = ""
         self.xblock.user_language = ""
+        self.xblock.user_fullname = ""
 
         # Username, email, and language can't be sent in studio mode, because the user object is not defined.
         # To test functionality test in LMS
@@ -157,6 +158,11 @@ class LtiConsumer(object):
             real_user_object = self.xblock.runtime.get_real_user(self.xblock.runtime.anonymous_student_id)
             self.xblock.user_email = getattr(real_user_object, "email", "")
             self.xblock.user_username = getattr(real_user_object, "username", "")
+
+            first_name = getattr(real_user_object, "first_name", "")
+            last_name = getattr(real_user_object, "last_name", "")
+            self.xblock.user_fullname = '{} {}'.format(first_name, last_name).strip() or self.xblock.user_username
+
             user_preferences = getattr(real_user_object, "preferences", None)
 
             if user_preferences is not None:
@@ -168,6 +174,8 @@ class LtiConsumer(object):
             lti_parameters["lis_person_sourcedid"] = self.xblock.user_username
         if self.xblock.ask_to_send_email and self.xblock.user_email:
             lti_parameters["lis_person_contact_email_primary"] = self.xblock.user_email
+        if self.xblock.ask_to_send_full_name and self.xblock.user_fullname:
+            lti_parameters["lis_person_name_full"] = self.xblock.user_fullname
         if self.xblock.user_language:
             lti_parameters["launch_presentation_locale"] = self.xblock.user_language
 
