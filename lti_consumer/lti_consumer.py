@@ -106,6 +106,7 @@ LTI_PARAMETERS = [
     'context_type',
     'context_title',
     'context_label',
+    'context_id',
     'launch_presentation_locale',
     'launch_presentation_document_target',
     'launch_presentation_css_url',
