@@ -452,25 +452,9 @@ class LtiConsumerXBlock(StudioEditableXBlockMixin, XBlock):
         Editable fields may/may not contain 'ask_to_send_username', 'ask_to_send_email' and 'ask_to_send_full_name'
         fields depending on the configuration service.
         """
-        editable_fields = self.editable_field_names
-        # update the editable fields if this XBlock is configured to not to allow the
-        # editing of 'ask_to_send_username','ask_to_send_email' and 'ask_to_send_full_name'.
-        config_service = self.runtime.service(self, 'lti-configuration')
-        if config_service:
-            is_already_sharing_learner_info = (
-                self.ask_to_send_email or self.ask_to_send_username or self.ask_to_send_full_name
-            )
-            if not config_service.configuration.lti_access_to_learners_editable(
-                    self.course_id,
-                    is_already_sharing_learner_info,
-            ):
-                editable_fields = tuple(
-                    field
-                    for field in self.editable_field_names
-                    if field not in ('ask_to_send_username', 'ask_to_send_email', 'ask_to_send_full_name')
-                )
-
-        return editable_fields
+        # NOTE(idegtiarov) OSPP project requires all optional fields become available in all courses without setting
+        #    lti_access_to_learners_editable for the course in studio django admin
+        return self.editable_field_names
 
     @property
     def descriptor(self):
