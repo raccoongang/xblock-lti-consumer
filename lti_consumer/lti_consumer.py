@@ -422,12 +422,21 @@ class LtiConsumerXBlock(StudioEditableXBlockMixin, XBlock):
         scope=Scope.settings
     )
 
+    email_notifications = Boolean(
+        display_name=_("Enable Email Notification"),
+        help=_(
+            "Enables email notification when a student earned a grade."
+        ),
+        default=False,
+        scope=Scope.settings
+    )
+
     # Possible editable fields
     editable_field_names = (
         'display_name', 'description', 'lti_id', 'launch_url', 'custom_parameters',
         'launch_target', 'button_text', 'inline_height', 'modal_height', 'modal_width',
         'has_score', 'weight', 'hide_launch', 'accept_grades_past_due', 'ask_to_send_username',
-        'ask_to_send_email'
+        'ask_to_send_email', 'email_notifications'
     )
 
     def validate_field_data(self, validation, data):

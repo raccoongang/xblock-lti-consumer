@@ -11,6 +11,10 @@ import urllib
 from lxml import etree
 from xml.sax.saxutils import escape
 
+from django.conf import settings
+from django.core.mail import EmailMultiAlternatives
+from django.urls import reverse
+
 from xblockutils.resources import ResourceLoader
 
 from .exceptions import LtiError
@@ -188,6 +192,28 @@ class OutcomeService(object):
             failure_values['imsx_description'] = "User not found."
             return response_xml_template.format(**failure_values)
 
+        # Sends an email when the user earned a grade if xblock setting "email_notifications" is enabled.
+        if self.xblock.email_notifications:
+
+            context = {
+                "username": real_user.username,
+                "user_first_name": real_user.first_name,
+                "lms_root": settings.LMS_ROOT_URL,
+                "platform_name": settings.PLATFORM_NAME,
+                "course_name": self.xblock.course.display_name,
+                "xblock_display_name": self.xblock.display_name,
+                "forum_link": settings.LMS_ROOT_URL + reverse('forum_form_discussion', args=[self.xblock.course_id]),
+                "xblock_url": settings.LMS_ROOT_URL + reverse(
+                    'jump_to', args=[self.xblock.course_id, self.xblock.location]
+                ),
+                "site_logo": '{root_url}/static/{site_theme}/images/logo.png'.format(
+                    root_url=settings.LMS_ROOT_URL,
+                    site_theme=settings.DEFAULT_SITE_THEME,
+                ),
+            }
+
+            self.send_email(real_user.email, context)
+
         if action == 'replaceResultRequest':
             self.xblock.set_user_module_score(real_user, score, self.xblock.max_score())
 
@@ -203,3 +229,20 @@ class OutcomeService(object):
         unsupported_values['imsx_messageIdentifier'] = escape(imsx_message_identifier)
         log.debug("[LTI]: Incorrect action.")
         return response_xml_template.format(**unsupported_values)
+
+    def send_email(self, to_addr, context):
+        """
+        Helper function which sends an email with needed context.
+
+        :param to_addr: Email address of the student who earned grade.
+        :param context: Context of the email message.
+        """
+        loader = ResourceLoader(__name__)
+
+        subject, from_email = self.xblock.display_name, settings.DEFAULT_FROM_EMAIL
+        text_content = loader.render_mako_template('/templates/email/user_score_notification.txt', context)
+        html_content = loader.render_mako_template('/templates/email/user_score_notification.html', context)
+
+        msg = EmailMultiAlternatives(subject, text_content, from_email, [to_addr])
+        msg.attach_alternative(html_content, "text/html")
+        msg.send()
