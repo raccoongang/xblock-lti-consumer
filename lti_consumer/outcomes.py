@@ -206,7 +206,7 @@ class OutcomeService(object):
                 "xblock_url": settings.LMS_ROOT_URL + reverse(
                     'jump_to', args=[self.xblock.course_id, self.xblock.location]
                 ),
-                "site_logo": '{root_url}/static/{site_theme}/images/logo.png'.format(
+                "site_logo": '{root_url}/static/{site_theme}/images/lti_email_logo.png'.format(
                     root_url=settings.LMS_ROOT_URL,
                     site_theme=settings.DEFAULT_SITE_THEME,
                 ),
