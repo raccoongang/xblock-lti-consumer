@@ -192,7 +192,7 @@ class OutcomeService(object):
             failure_values['imsx_description'] = "User not found."
             return response_xml_template.format(**failure_values)
 
-        # Sends an email when the user earned a grade if xblock setting "email_notifications" is enabled.
+        # Sends an email when the user earns a grade if xblock setting "email_notifications" is enabled.
         if self.xblock.email_notifications:
 
             context = {
@@ -232,7 +232,7 @@ class OutcomeService(object):
 
     def send_email(self, to_addr, context):
         """
-        Helper function which sends an email with needed context.
+        Helper function which sends an email with required context.
 
         :param to_addr: Email address of the student who earned grade.
         :param context: Context of the email message.

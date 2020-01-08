@@ -90,11 +90,7 @@ from django.utils.translation import ugettext as _
                         <td>
                             <h1>${_("Review available")}</h1>
                             <p style="color: rgba(0,0,0,.75);">
-                                % if user_first_name:
-                                Dear ${user_first_name}
-                                %else:
-                                Dear ${username}
-                                % endif
+                                Dear ${user_first_name if user_first_name else username}
                                 <br/>
                             </p>
                             <p style="color: rgba(0,0,0,.75);">

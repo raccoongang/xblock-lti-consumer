@@ -4,11 +4,7 @@ from django.utils.translation import ugettext as _
 
 ${_("Review available")}
 
-% if user_first_name:
-Dear ${user_first_name}
-%else:
-Dear ${username}
-% endif
+Dear ${user_first_name if user_first_name else username}
 
 Your Assignment: ${xblock_display_name} in course ${course_name} review is ready.
 For questions or queries, check out the discussion forum: ${forum_link}

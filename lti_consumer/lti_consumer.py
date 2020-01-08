@@ -425,7 +425,7 @@ class LtiConsumerXBlock(StudioEditableXBlockMixin, XBlock):
     email_notifications = Boolean(
         display_name=_("Enable Email Notification"),
         help=_(
-            "Enables email notification when a student earned a grade."
+            "Send email notification when student earns a grade."
         ),
         default=False,
         scope=Scope.settings
