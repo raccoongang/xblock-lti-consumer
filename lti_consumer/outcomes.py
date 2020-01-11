@@ -11,11 +11,14 @@ import urllib
 from lxml import etree
 from xml.sax.saxutils import escape
 
+from django.conf import settings
+from django.urls import reverse
+from lxml import etree
 from xblockutils.resources import ResourceLoader
 
 from .exceptions import LtiError
 from .oauth import verify_oauth_body_signature
-
+from .tasks import send_email_message
 
 log = logging.getLogger(__name__)
 
@@ -187,6 +190,30 @@ class OutcomeService(object):
             failure_values['imsx_messageIdentifier'] = escape(imsx_message_identifier)
             failure_values['imsx_description'] = "User not found."
             return response_xml_template.format(**failure_values)
+
+        # Sends an email when the user earns a grade if xblock setting "email_notifications" is enabled.
+        if self.xblock.email_notifications:
+            context = {
+                "username": real_user.username,
+                "user_first_name": real_user.first_name,
+                "lms_root": settings.LMS_ROOT_URL,
+                "platform_name": settings.PLATFORM_NAME,
+                "course_name": self.xblock.course.display_name,
+                "xblock_display_name": self.xblock.display_name,
+                "forum_link": settings.LMS_ROOT_URL + reverse('forum_form_discussion', args=[self.xblock.course_id]),
+                "xblock_url": settings.LMS_ROOT_URL + reverse(
+                    'jump_to', args=[self.xblock.course_id, self.xblock.location]
+                ),
+                "site_logo": '{root_url}/static/{site_theme}/images/lti_email_logo.png'.format(
+                    root_url=settings.LMS_ROOT_URL,
+                    site_theme=settings.DEFAULT_SITE_THEME,
+                ),
+            }
+            send_email_message.delay(
+                to_addr=real_user.email,
+                subject=self.xblock.display_name,
+                context=context
+            )
 
         if action == 'replaceResultRequest':
             self.xblock.set_user_module_score(real_user, score, self.xblock.max_score())
