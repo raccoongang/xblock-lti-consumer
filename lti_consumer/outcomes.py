@@ -12,14 +12,13 @@ from lxml import etree
 from xml.sax.saxutils import escape
 
 from django.conf import settings
-from django.core.mail import EmailMultiAlternatives
 from django.urls import reverse
-
+from lxml import etree
 from xblockutils.resources import ResourceLoader
 
 from .exceptions import LtiError
 from .oauth import verify_oauth_body_signature
-
+from .tasks import send_email_message
 
 log = logging.getLogger(__name__)
 
@@ -194,7 +193,6 @@ class OutcomeService(object):
 
         # Sends an email when the user earns a grade if xblock setting "email_notifications" is enabled.
         if self.xblock.email_notifications:
-
             context = {
                 "username": real_user.username,
                 "user_first_name": real_user.first_name,
@@ -211,8 +209,11 @@ class OutcomeService(object):
                     site_theme=settings.DEFAULT_SITE_THEME,
                 ),
             }
-
-            self.send_email(real_user.email, context)
+            send_email_message.delay(
+                to_addr=real_user.email,
+                subject=self.xblock.display_name,
+                context=context
+            )
 
         if action == 'replaceResultRequest':
             self.xblock.set_user_module_score(real_user, score, self.xblock.max_score())
@@ -229,20 +230,3 @@ class OutcomeService(object):
         unsupported_values['imsx_messageIdentifier'] = escape(imsx_message_identifier)
         log.debug("[LTI]: Incorrect action.")
         return response_xml_template.format(**unsupported_values)
-
-    def send_email(self, to_addr, context):
-        """
-        Helper function which sends an email with required context.
-
-        :param to_addr: Email address of the student who earned grade.
-        :param context: Context of the email message.
-        """
-        loader = ResourceLoader(__name__)
-
-        subject, from_email = self.xblock.display_name, settings.DEFAULT_FROM_EMAIL
-        text_content = loader.render_mako_template('/templates/email/user_score_notification.txt', context)
-        html_content = loader.render_mako_template('/templates/email/user_score_notification.html', context)
-
-        msg = EmailMultiAlternatives(subject, text_content, from_email, [to_addr])
-        msg.attach_alternative(html_content, "text/html")
-        msg.send()
