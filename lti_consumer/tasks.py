@@ -3,13 +3,16 @@ Defines asynchronous celery task for sending email notification (via EmailMultiA
 pertaining if a user got a grade in the LTI window, an email message sends for him
 """
 
-from celery import task
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from xblockutils.resources import ResourceLoader
 
+from lms import CELERY_APP
 
-@task
+ACE_ROUTING_KEY = getattr(settings, 'ACE_ROUTING_KEY', None)
+
+
+@CELERY_APP.task(name='lti_consumer.tasks.send_email_message', routing_key=ACE_ROUTING_KEY)
 def send_email_message(to_addr, subject, context):
     """
     Sends email with required context.
