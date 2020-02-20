@@ -277,7 +277,7 @@ class LtiConsumerXBlock(StudioEditableXBlockMixin, XBlock):
             docs_anchor_open=DOCS_ANCHOR_TAG_OPEN,
             anchor_close="</a>"
         ),
-        default='',
+        default="Vocareum_LTI_Course",
         scope=Scope.settings
     )
     launch_url = String(
@@ -313,7 +313,7 @@ class LtiConsumerXBlock(StudioEditableXBlockMixin, XBlock):
             "Select New Window if you want the LTI content to open in a new browser window. "
             "This setting is only used when Hide External Tool is set to False."
         ),
-        default=LaunchTarget.IFRAME.value,
+        default=LaunchTarget.NEW_WINDOW.value,
         scope=Scope.settings,
         values=[
             {"display_name": LaunchTarget.IFRAME.display_name, "value": LaunchTarget.IFRAME.value},
@@ -364,7 +364,7 @@ class LtiConsumerXBlock(StudioEditableXBlockMixin, XBlock):
     has_score = Boolean(
         display_name=_("Scored"),
         help=_("Select True if this component will receive a numerical score from the external LTI system."),
-        default=False,
+        default=True,
         scope=Scope.settings
     )
     weight = Float(
@@ -411,14 +411,14 @@ class LtiConsumerXBlock(StudioEditableXBlockMixin, XBlock):
         display_name=_("Request user's username"),
         # Translators: This is used to request the user's username for a third party service.
         help=_("Select True to request the user's username."),
-        default=False,
+        default=True,
         scope=Scope.settings
     )
     ask_to_send_email = Boolean(
         display_name=_("Request user's email"),
         # Translators: This is used to request the user's email for a third party service.
         help=_("Select True to request the user's email address."),
-        default=False,
+        default=True,
         scope=Scope.settings
     )
 
@@ -427,7 +427,7 @@ class LtiConsumerXBlock(StudioEditableXBlockMixin, XBlock):
         help=_(
             "Send email notification when student earns a grade."
         ),
-        default=False,
+        default=True,
         scope=Scope.settings
     )
 
