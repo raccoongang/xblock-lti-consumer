@@ -7,6 +7,5 @@ ${_("Review available")}
 Dear ${user_first_name if user_first_name else username}
 
 Your Assignment: ${xblock_display_name} in course ${course_name} is reviewed.
-For questions or queries, check out the discussion forum: ${forum_link}
 
 ${_("Go to project")}: ${xblock_url}

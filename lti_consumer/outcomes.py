@@ -8,7 +8,6 @@ https://www.imsglobal.org/specs/ltiomv1p0
 import logging
 import urllib
 
-from lxml import etree
 from xml.sax.saxutils import escape
 
 from django.conf import settings
@@ -200,7 +199,6 @@ class OutcomeService(object):
                 "platform_name": settings.PLATFORM_NAME,
                 "course_name": self.xblock.course.display_name,
                 "xblock_display_name": self.xblock.display_name,
-                "forum_link": settings.LMS_ROOT_URL + reverse('forum_form_discussion', args=[self.xblock.course_id]),
                 "xblock_url": settings.LMS_ROOT_URL + reverse(
                     'jump_to', args=[self.xblock.course_id, self.xblock.location]
                 ),
