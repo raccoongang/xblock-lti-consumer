@@ -39,9 +39,6 @@ setup(
         'https://github.com/edx/xblock-utils/tarball/c39bf653e4f27fb3798662ef64cde99f57603f79#egg=xblock-utils',
     ],
     entry_points={
-        "lms.djangoapp": [
-            "rg_learning_time = lti_consumer.apps:ApiConfig"
-        ],
         'xblock.v1': [
             'lti_consumer = lti_consumer:LtiConsumerXBlock',
         ]
