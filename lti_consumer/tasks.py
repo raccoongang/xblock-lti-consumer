@@ -9,10 +9,8 @@ from xblockutils.resources import ResourceLoader
 
 from lms import CELERY_APP
 
-ACE_ROUTING_KEY = getattr(settings, 'ACE_ROUTING_KEY', None)
 
-
-@CELERY_APP.task(name='lti_consumer.tasks.send_email_message', routing_key=ACE_ROUTING_KEY)
+@CELERY_APP.task(name='lti_consumer.tasks.send_email_message')
 def send_email_message(to_addr, subject, context):
     """
     Sends email with required context.
