@@ -17,7 +17,6 @@ from xblockutils.resources import ResourceLoader
 
 from .exceptions import LtiError
 from .oauth import verify_oauth_body_signature
-from .tasks import send_email_message
 
 log = logging.getLogger(__name__)
 
@@ -192,6 +191,7 @@ class OutcomeService(object):
 
         # Sends an email when the user earns a grade if xblock setting "email_notifications" is enabled.
         if self.xblock.email_notifications:
+            from .tasks import send_email_message  # Import here since this is edX LMS specific
             context = {
                 "username": real_user.username,
                 "user_first_name": real_user.first_name,
