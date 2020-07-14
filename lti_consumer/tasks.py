@@ -3,6 +3,7 @@ Defines asynchronous celery task for sending email notification (via EmailMultiA
 pertaining if a user got a grade in the LTI window, an email message sends for him
 """
 from celery.decorators import task  # pylint: disable=import-error
+
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from xblockutils.resources import ResourceLoader
