@@ -10,7 +10,7 @@ from xblockutils.resources import ResourceLoader
 from lms import CELERY_APP
 
 
-@CELERY_APP.task(name='lti_consumer.tasks.send_email_message')
+@task()
 def send_email_message(to_addr, subject, context):
     """
     Sends email with required context.
