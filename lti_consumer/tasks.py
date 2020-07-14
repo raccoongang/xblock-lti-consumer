@@ -8,8 +8,6 @@ from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from xblockutils.resources import ResourceLoader
 
-from lms import CELERY_APP
-
 
 @task()
 def send_email_message(to_addr, subject, context):
