@@ -10,7 +10,7 @@ from xblockutils.resources import ResourceLoader
 
 
 @task()
-def send_email_message(to_addr, subject, context):
+def send_email_message(to_addr, subject, context, **kwargs):
     """
     Sends email with required context.
 
