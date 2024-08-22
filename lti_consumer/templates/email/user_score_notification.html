@@ -1,136 +1,160 @@
 <%
+import datetime
 from django.utils.translation import ugettext as _
 %>
 
 <!DOCTYPE html>
 <html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title lang="en">${_("OpenCV")}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title lang="en">${_("OpenCV")}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-    <style type="text/css">
-        @media only screen and (min-device-width: 601px) {
-            .content {
-                width: 600px !important;
+        <style type="text/css">
+            @media only screen and (min-device-width: 601px) {
+                .content {
+                    width: 600px !important;
+                }
             }
-        }
 
-        @-ms-viewport {
-            width: device-width;
-        }
-
-        /* Column Drop Layout Pattern CSS */
-        @media only screen and (max-width: 450px) {
-            td[class="col"] {
-                display: block;
-                width: 100%;
-                -moz-box-sizing: border-box;
-                -webkit-box-sizing: border-box;
-                box-sizing: border-box;
-                float: left;
-                text-align: left !important;
-                padding-bottom: 20px;
+            @-ms-viewport {
+                width: device-width;
             }
-        }
-    </style>
-</head>
-<body>
-<div lang="en" style="
-    display:none;
-    font-size:1px;
-    line-height:1px;
-    max-height:0px;
-    max-width:0px;
-    opacity:0;
-    overflow:hidden;
-    visibility:hidden;
-"></div>
 
-<div bgcolor="#f5f5f5" lang="en" dir="ltr" style="
-    margin: 0;
-    padding: 0;
-    min-width: 100%;
-">
-    <!-- Hack for outlook 2010, which wants to render everything in Times New Roman -->
-    <!--[if mso]>
-    <style type="text/css">
-        body, table, td {
-            font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
-        }
-    </style>
-    <![endif]-->
+            /* Column Drop Layout Pattern CSS */
+            @media only screen and (max-width: 450px) {
+                td[class="col"] {
+                    display: block;
+                    width: 100%;
+                    -moz-box-sizing: border-box;
+                    -webkit-box-sizing: border-box;
+                    box-sizing: border-box;
+                    float: left;
+                    text-align: left !important;
+                    padding-bottom: 20px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div lang="en" style="display:none;font-size:1px;line-height:1px;max-height:0px;max-width:0px;opacity:0;overflow:hidden;visibility:hidden;"></div>
 
-    <!--[if (gte mso 9)|(IE)]>
-    <table role="presentation" width="600" align="center" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-            <td>
-    <![endif]-->
+        <div bgcolor="#ddd" lang="en" dir="ltr" style="margin: 0;padding: 0;min-width: 100%;">
+            <!-- Hack for outlook 2010, which wants to render everything in Times New Roman -->
 
-    <!-- CONTENT -->
-    <table class="content" role="presentation" align="center" cellpadding="0" cellspacing="0" border="0"
-           width="100%" style="
-        font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-        font-size: 1em;
-        line-height: 1.5;
-        max-width: 600px;
-        padding: 0 20px 0 20px;
-    ">
-        <tr>
-            <!-- MAIN -->
-            <td class="main" bgcolor="#ffffff" style="padding: 30px 20px;">
+            <!--[if mso]>
+            <style type="text/css">
+                body, table, td {font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;}
+            </style>
+            <![endif]-->
 
-                <table width="100%" align="left" border="0" cellpadding="0" cellspacing="0" role="presentation">
-                    <tr>
-                        <td width="70">
-                            <a href="${lms_root}"><img src="${site_logo}" width="90" height="90" alt="Go to Your ${platform_name} Home Page"/></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <h1>${_("Review available")}</h1>
-                            <p style="color: rgba(0,0,0,.75);">
-                                Dear ${user_first_name if user_first_name else username}
-                                <br/>
-                            </p>
-                            <p style="color: rgba(0,0,0,.75);">
-                                Your Assignment: ${xblock_display_name} in course ${course_name} is reviewed.
-                                <br/>
-                            </p>
-                            <p>
-                                <a href="${xblock_url}" style="
+            <!--[if (gte mso 9)|(IE)]>
+            <table role="presentation" width="600" align="center" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td>
+            <![endif]-->
+
+            <!-- CONTENT -->
+            <table class="content" role="presentation" align="center" cellpadding="0" cellspacing="0" border="0" bgcolor="#f5f5f5" width="100%" style="
+                font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+                font-size: 1em;
+                line-height: 1.5;
+                max-width: 600px;
+                padding: 0 20px 0 20px;
+            ">
+
+                <tr>
+                    <!-- HEADER -->
+                    <td class="header" style="padding: 20px;">
+                        <table role="presentation" width="100%" align="left" border="0" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td width="70">
+                                    <a href="${lms_root}">
+                                        <img src="${site_logo}"
+                                             width="176" height="50" alt="Go to Your ${platform_name} Home Page"/>
+                                    </a>
+                                </td>
+                                <td align="right" style="text-align: right;">
+                                    <a class="login" href="${dashboard_url}" style="color: #274fd6;">${_("Sign In")}</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <tr>
+                    <!-- MAIN -->
+                    <td class="main" bgcolor="#ffffff" style="padding: 30px 20px;box-shadow: 0 1px 5px rgba(0,0,0,0.25);">
+                        <h1>${_("Review available")}</h1>
+                        <p style="color: rgba(0,0,0,.75);">
+                            Dear ${user_first_name if user_first_name else username}
+                            <br/>
+                        </p>
+                        <p style="color: rgba(0,0,0,.75);">
+                            Your Assignment: ${xblock_display_name} in course ${course_name} is reviewed.
+                            <br/>
+                        </p>
+                        <p>
+                            <a href="${xblock_url}" style="
                                     color: #ffffff;
                                     text-decoration: none;
                                     border-radius: 4px;
                                     -webkit-border-radius: 4px;
                                     -moz-border-radius: 4px;
-                                    background-color: #1886c3;
-                                    border-top: 12px solid #1886c3;
-                                    border-bottom: 12px solid #1886c3;
-                                    border-right: 50px solid #1886c3;
-                                    border-left: 50px solid #1886c3;
+                                    background-color: #274fd6;
+                                    border-top: 12px solid #274fd6;
+                                    border-bottom: 12px solid #274fd6;
+                                    border-right: 50px solid #274fd6;
+                                    border-left: 50px solid #274fd6;
                                     display: inline-block;
                                    ">
-                                    <font color="#ffffff">
-                                        <b>${_("Go to project")}</b>
-                                    </font>
-                                </a>
-                            </p>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-        <tr>
-            <td class="footer" style="padding: 20px;"></td>
-        </tr>
-    </table>
+                                <font color="#ffffff">
+                                    <b>${_("Go to project")}</b>
+                                </font>
+                            </a>
+                        </p>
+                    </td>
+                </tr>
 
-    <!--[if (gte mso 9)|(IE)]>
-    </td>
-    </tr>
-    </table>
-    <![endif]-->
-</div>
-</body>
+                <tr>
+                    <!-- FOOTER -->
+                    <td class="footer" style="padding: 20px;">
+                        <table role="presentation" width="100%" align="left" border="0" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <!-- SOCIAL -->
+                                <td style="padding-bottom: 20px;"></td>
+                            </tr>
+
+                            <tr>
+                                <!-- APP BUTTONS -->
+                                <td style="padding-bottom: 20px;"></td>
+                            </tr>
+
+                            <tr>
+                                <!-- Actions -->
+                                <td style="padding-bottom: 20px;"></td>
+                            </tr>
+
+                            <tr>
+                                <!-- COPYRIGHT -->
+                                <td>
+                                    &copy; ${datetime.datetime.now().year} ${platform_name}, ${_("All rights reserved")}.<br/>
+                                    <br/>
+                                    ${_("Our mailing address is")}:<br/>
+                                    ${contact_mailing_address}
+                                </td>
+                            </tr>
+
+                        </table>
+                    </td>
+                </tr>
+            </table>
+
+            <!--[if (gte mso 9)|(IE)]>
+                  </td>
+                </tr>
+            </table>
+            <![endif]-->
+        </div>
+    </body>
 </html>

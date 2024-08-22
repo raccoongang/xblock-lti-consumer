@@ -206,6 +206,8 @@ class OutcomeService(object):
                     root_url=settings.LMS_ROOT_URL,
                     site_theme=settings.DEFAULT_SITE_THEME,
                 ),
+                "dashboard_url": "SET-ME-PLEASE",
+                "contact_mailing_address": "SET-ME-PLEASE",
             }
             send_email_message.delay(
                 to_addr=real_user.email,
