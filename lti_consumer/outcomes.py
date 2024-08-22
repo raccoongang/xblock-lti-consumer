@@ -13,6 +13,7 @@ from xml.sax.saxutils import escape
 from django.conf import settings
 from django.urls import reverse
 from lxml import etree
+from openedx.core.djangoapps.theming.helpers import get_config_value_from_site_or_settings
 from xblockutils.resources import ResourceLoader
 
 from .exceptions import LtiError
@@ -194,7 +195,7 @@ class OutcomeService(object):
             from .tasks import send_email_message  # Import here since this is edX LMS specific
             context = {
                 "username": real_user.username,
-                "user_first_name": real_user.first_name,
+                "user_full_name": real_user.profile.name,
                 "lms_root": settings.LMS_ROOT_URL,
                 "platform_name": settings.PLATFORM_NAME,
                 "course_name": self.xblock.course.display_name,
@@ -206,8 +207,8 @@ class OutcomeService(object):
                     root_url=settings.LMS_ROOT_URL,
                     site_theme=settings.DEFAULT_SITE_THEME,
                 ),
-                "dashboard_url": "SET-ME-PLEASE",
-                "contact_mailing_address": "SET-ME-PLEASE",
+                "dashboard_url": reverse("dashboard"),
+                'contact_mailing_address': get_config_value_from_site_or_settings('CONTACT_MAILING_ADDRESS'),
             }
             send_email_message.delay(
                 to_addr=real_user.email,
