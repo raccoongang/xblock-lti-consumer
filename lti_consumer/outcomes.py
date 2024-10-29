@@ -90,6 +90,7 @@ class OutcomeService(object):
     For more details see:
     https://www.imsglobal.org/specs/ltiomv1p0
     """
+    MINIMAL_GRADE = "0"
 
     def __init__(self, xblock):
         self.xblock = xblock
@@ -208,7 +209,11 @@ class OutcomeService(object):
                     site_theme=settings.DEFAULT_SITE_THEME,
                 ),
                 "dashboard_url": reverse("dashboard"),
-                'contact_mailing_address': get_config_value_from_site_or_settings('CONTACT_MAILING_ADDRESS'),
+                "progress_url": settings.LMS_ROOT_URL + reverse(
+                    "progress", kwargs={"course_id": str(self.xblock.course_id)}
+                ),
+                "contact_mailing_address": get_config_value_from_site_or_settings("CONTACT_MAILING_ADDRESS"),
+                "grade": score
             }
             send_email_message.delay(
                 to_addr=real_user.email,
@@ -231,3 +236,19 @@ class OutcomeService(object):
         unsupported_values['imsx_messageIdentifier'] = escape(imsx_message_identifier)
         log.debug("[LTI]: Incorrect action.")
         return response_xml_template.format(**unsupported_values)
+
+    def get_grade_display(self, raw_score):
+        """
+        Returns a string representation of the grade.
+        :param raw_score:
+        :return:
+        """
+        try:
+            score = float(raw_score)
+        except ValueError:
+            return self.MINIMAL_GRADE
+
+        if score == int(score):
+            return "%d" % int(score)
+        else:
+            return "%.2f" % score

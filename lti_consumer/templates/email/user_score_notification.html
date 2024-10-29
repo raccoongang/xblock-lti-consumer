@@ -90,29 +90,61 @@ from django.utils.translation import ugettext as _
                             Dear ${user_full_name if user_full_name else username}
                             <br/>
                         </p>
-                        <p style="color: rgba(0,0,0,.75);">
-                            Your Assignment: ${xblock_display_name} in course ${course_name} is reviewed.
-                            <br/>
-                        </p>
-                        <p>
-                            <a href="${xblock_url}" style="
-                                    color: #ffffff;
-                                    text-decoration: none;
-                                    border-radius: 4px;
-                                    -webkit-border-radius: 4px;
-                                    -moz-border-radius: 4px;
-                                    background-color: #274fd6;
-                                    border-top: 12px solid #274fd6;
-                                    border-bottom: 12px solid #274fd6;
-                                    border-right: 50px solid #274fd6;
-                                    border-left: 50px solid #274fd6;
-                                    display: inline-block;
-                                   ">
-                                <font color="#ffffff">
-                                    <b>${_("Go to project")}</b>
-                                </font>
-                            </a>
-                        </p>
+                        % if grade in ['100', '100.00']:
+                            <p style="color: rgba(0,0,0,.75);">
+                                Congratulations on achieving full marks for your submission, ${xblock_display_name},
+                                in the course ${course_name}! Your hard work and dedication has truly paid off,
+                                and you should be proud of this accomplishment. You can check your grades here:
+                                <br/>
+                            </p>
+                            <p>
+                                <a href="${progress_url}" style="
+                                        color: #ffffff;
+                                        text-decoration: none;
+                                        border-radius: 4px;
+                                        -webkit-border-radius: 4px;
+                                        -moz-border-radius: 4px;
+                                        background-color: #274fd6;
+                                        border-top: 12px solid #274fd6;
+                                        border-bottom: 12px solid #274fd6;
+                                        border-right: 50px solid #274fd6;
+                                        border-left: 50px solid #274fd6;
+                                        display: inline-block;
+                                       ">
+                                    <font color="#ffffff">
+                                        <b>${_("Check Your Progress")}</b>
+                                    </font>
+                                </a>
+                            </p>
+                        % else:
+                            <p style="color: rgba(0,0,0,.75);">
+                                Your submission, ${xblock_display_name}, in the course ${course_name} has been graded.
+                                Your score is ${ grade }%. While you’ve made great progress, we believe there’s still
+                                room for improvement. We encourage you to review the feedback provided on Vocareum
+                                Labs to help you strengthen your work further.
+                                <br/>
+                            </p>
+                            <p>
+                                <a href="${xblock_url}" style="
+                                        color: #ffffff;
+                                        text-decoration: none;
+                                        border-radius: 4px;
+                                        -webkit-border-radius: 4px;
+                                        -moz-border-radius: 4px;
+                                        background-color: #274fd6;
+                                        border-top: 12px solid #274fd6;
+                                        border-bottom: 12px solid #274fd6;
+                                        border-right: 50px solid #274fd6;
+                                        border-left: 50px solid #274fd6;
+                                        display: inline-block;
+                                       ">
+                                    <font color="#ffffff">
+                                        <b>${_("Check Your Review")}</b>
+                                    </font>
+                                </a>
+                            </p>
+                        % endif
+
                     </td>
                 </tr>
 
