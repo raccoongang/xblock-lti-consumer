@@ -213,7 +213,7 @@ class OutcomeService(object):
                     "progress", kwargs={"course_id": str(self.xblock.course_id)}
                 ),
                 "contact_mailing_address": get_config_value_from_site_or_settings("CONTACT_MAILING_ADDRESS"),
-                "grade": score
+                "grade": self.get_grade_display(score),
             }
             send_email_message.delay(
                 to_addr=real_user.email,
@@ -244,7 +244,7 @@ class OutcomeService(object):
         :return:
         """
         try:
-            score = float(raw_score)
+            score = float(raw_score) * 100
         except ValueError:
             return self.MINIMAL_GRADE
 
