@@ -208,7 +208,7 @@ class OutcomeService(object):
                     root_url=settings.LMS_ROOT_URL,
                     site_theme=settings.DEFAULT_SITE_THEME,
                 ),
-                "dashboard_url": reverse("dashboard"),
+                "dashboard_url": settings.LMS_ROOT_URL + reverse("dashboard"),
                 "progress_url": settings.LMS_ROOT_URL + reverse(
                     "progress", kwargs={"course_id": str(self.xblock.course_id)}
                 ),
