@@ -551,6 +551,13 @@ class LtiConsumerXBlock(StudioEditableXBlockMixin, XBlock):
         default=False,
         scope=Scope.settings
     )
+    ask_to_send_full_name = Boolean(
+        display_name=_("Request user's full name"),
+        # Translators: This is used to request the user's full name for a third party service.
+        help=_("Select True to request the user's full name."),
+        default=False,
+        scope=Scope.settings
+    )
     ask_to_send_email = Boolean(
         display_name=_("Request user's email"),
         # Translators: This is used to request the user's email for a third party service.
@@ -558,6 +565,7 @@ class LtiConsumerXBlock(StudioEditableXBlockMixin, XBlock):
         default=False,
         scope=Scope.settings
     )
+
     enable_processors = Boolean(
         display_name=_("Send extra parameters"),
         help=_("Select True to send the extra parameters, which might contain Personally Identifiable Information. "
@@ -581,7 +589,7 @@ class LtiConsumerXBlock(StudioEditableXBlockMixin, XBlock):
         # Other parameters
         'custom_parameters', 'launch_target', 'button_text', 'inline_height', 'modal_height',
         'modal_width', 'has_score', 'weight', 'hide_launch', 'accept_grades_past_due',
-        'ask_to_send_username', 'ask_to_send_email', 'enable_processors',
+        'ask_to_send_username', 'ask_to_send_full_name', 'ask_to_send_email', 'enable_processors',
     )
 
     # Author view
@@ -662,7 +670,7 @@ class LtiConsumerXBlock(StudioEditableXBlockMixin, XBlock):
     def editable_fields(self):
         """
         Returns editable fields which may/may not contain 'ask_to_send_username' and
-        'ask_to_send_email' fields depending on the configuration service.
+        'ask_to_send_full_name' and 'ask_to_send_email' fields depending on the configuration service.
         """
         editable_fields = self.editable_field_names
 
@@ -675,10 +683,14 @@ class LtiConsumerXBlock(StudioEditableXBlockMixin, XBlock):
                 if field not in ['config_type', 'external_config']
             )
         # update the editable fields if this XBlock is configured to not to allow the
-        # editing of 'ask_to_send_username' and 'ask_to_send_email'.
+        # editing of 'ask_to_send_username', 'ask_to_send_full_name', and 'ask_to_send_email'.
         config_service = self.runtime.service(self, 'lti-configuration')
         if config_service:
-            is_already_sharing_learner_info = self.ask_to_send_email or self.ask_to_send_username
+            is_already_sharing_learner_info = (
+                self.ask_to_send_username or
+                self.ask_to_send_full_name or
+                self.ask_to_send_email
+            )
             if not config_service.configuration.lti_access_to_learners_editable(
                     self.course_id,
                     is_already_sharing_learner_info,
@@ -953,6 +965,7 @@ class LtiConsumerXBlock(StudioEditableXBlockMixin, XBlock):
         user_data = {
             'user_email': None,
             'user_username': None,
+            'user_full_name': user.full_name,
             'user_language': None,
         }
 
@@ -1057,9 +1070,12 @@ class LtiConsumerXBlock(StudioEditableXBlockMixin, XBlock):
         lti_consumer = self._get_lti_consumer()
 
         username = None
+        full_name = None
         email = None
         if self.ask_to_send_username and real_user_data['user_username']:
             username = real_user_data['user_username']
+        if self.ask_to_send_full_name and real_user_data['user_full_name']:
+            full_name = real_user_data['user_full_name']
         if self.ask_to_send_email and real_user_data['user_email']:
             email = real_user_data['user_email']
 
@@ -1068,7 +1084,8 @@ class LtiConsumerXBlock(StudioEditableXBlockMixin, XBlock):
             self.role,
             result_sourcedid=self.lis_result_sourcedid,
             person_sourcedid=username,
-            person_contact_email_primary=email
+            person_contact_email_primary=email,
+            person_name_full=full_name,
         )
         lti_consumer.set_context_data(
             self.context_id,
@@ -1549,6 +1566,7 @@ class LtiConsumerXBlock(StudioEditableXBlockMixin, XBlock):
             'module_score': self.module_score,
             'comment': sanitized_comment,
             'description': self.description,
+            'ask_to_send_full_name': self.ask_to_send_full_name,
             'ask_to_send_username': self.ask_to_send_username,
             'ask_to_send_email': self.ask_to_send_email,
             'button_text': self.button_text,

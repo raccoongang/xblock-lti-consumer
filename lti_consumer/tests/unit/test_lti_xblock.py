@@ -429,8 +429,8 @@ class TestEditableFields(TestLtiConsumerXBlock):
         Returns a mock object of lti-configuration service
 
         Arguments:
-            editable (bool): This indicates whether the LTI fields (i.e. 'ask_to_send_username' and
-            'ask_to_send_email') are editable.
+            editable (bool): This indicates whether the LTI fields (i.e. 'ask_to_send_username', 'ask_to_send_full_name',
+            and 'ask_to_send_email') are editable.
         """
         lti_configuration = Mock()
         lti_configuration.configuration = Mock()
@@ -450,32 +450,35 @@ class TestEditableFields(TestLtiConsumerXBlock):
 
     def test_editable_fields_with_no_config(self):
         """
-        Test that LTI XBlock's fields (i.e. 'ask_to_send_username' and 'ask_to_send_email')
-        are editable when lti-configuration service is not provided.
+        Test that LTI XBlock's fields (i.e. 'ask_to_send_username', 'ask_to_send_full_name', and 'ask_to_send_email')
         """
         self.xblock.runtime.service.return_value = None
-        # Assert that 'ask_to_send_username' and 'ask_to_send_email' are editable.
-        self.assertTrue(self.are_fields_editable(fields=['ask_to_send_username', 'ask_to_send_email']))
+        # Assert that 'ask_to_send_username', 'ask_to_send_full_name', and 'ask_to_send_email' are editable.
+        self.assertTrue(
+            self.are_fields_editable(fields=['ask_to_send_username', 'ask_to_send_full_name', 'ask_to_send_email'])
+        )
 
     def test_editable_fields_when_editing_allowed(self):
         """
-        Test that LTI XBlock's fields (i.e. 'ask_to_send_username' and 'ask_to_send_email')
-        are editable when this XBlock is configured to allow it.
+        Test that LTI XBlock's fields (i.e. 'ask_to_send_username', 'ask_to_send_full_name', and 'ask_to_send_email')
         """
         # this XBlock is configured to allow editing of LTI fields
         self.xblock.runtime.service.return_value = self.get_mock_lti_configuration(editable=True)
-        # Assert that 'ask_to_send_username' and 'ask_to_send_email' are editable.
-        self.assertTrue(self.are_fields_editable(fields=['ask_to_send_username', 'ask_to_send_email']))
+        # Assert that 'ask_to_send_username', 'ask_to_send_full_name', and 'ask_to_send_email' are editable.
+        self.assertTrue(
+            self.are_fields_editable(fields=['ask_to_send_username', 'ask_to_send_full_name', 'ask_to_send_email'])
+        )
 
     def test_editable_fields_when_editing_not_allowed(self):
         """
-        Test that LTI XBlock's fields (i.e. 'ask_to_send_username' and 'ask_to_send_email')
-        are not editable when this XBlock is configured to not to allow it.
+        Test that LTI XBlock's fields (i.e. 'ask_to_send_username', 'ask_to_send_full_name', and 'ask_to_send_email')
         """
         # this XBlock is configured to not to allow editing of LTI fields
         self.xblock.runtime.service.return_value = self.get_mock_lti_configuration(editable=False)
-        # Assert that 'ask_to_send_username' and 'ask_to_send_email' are not editable.
-        self.assertFalse(self.are_fields_editable(fields=['ask_to_send_username', 'ask_to_send_email']))
+        # Assert that 'ask_to_send_username', 'ask_to_send_full_name', and 'ask_to_send_email' are not editable.
+        self.assertFalse(
+            self.are_fields_editable(fields=['ask_to_send_username', 'ask_to_send_full_name', 'ask_to_send_email'])
+        )
 
     def test_lti_1p3_fields_appear(self):
         """
@@ -545,6 +548,10 @@ class TestExtractRealUserData(TestLtiConsumerXBlock):
         fake_user = Mock()
         fake_user_email = 'abc@example.com'
         fake_user.emails = [fake_user_email]
+
+        full_name_mock = PropertyMock(return_value='fake_full_name')
+        type(fake_user).full_name = full_name_mock
+
         fake_username = 'fake'
         fake_user.opt_attrs = {
             "edx-platform.username": fake_username
@@ -686,6 +693,10 @@ class TestLtiLaunchHandler(TestLtiConsumerXBlock):
         fake_user = Mock()
         fake_user_email = 'abc@example.com'
         fake_user.emails = [fake_user_email]
+
+        full_name_mock = PropertyMock(return_value='fake_full_name')
+        type(fake_user).full_name = full_name_mock
+
         fake_username = 'fake'
         fake_user.opt_attrs = {
             "edx-platform.username": fake_username

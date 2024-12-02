@@ -95,6 +95,7 @@ function LtiConsumerXBlock(runtime, element) {
         var $element = $(element);
         var $ltiContainer = $element.find('.lti-consumer-container');
         var askToSendUsername = $ltiContainer.data('ask-to-send-username') == 'True';
+        var askToSendFullName = $ltiContainer.data('ask-to-send-full-name') == 'True';
         var askToSendEmail = $ltiContainer.data('ask-to-send-email') == 'True';
 
         // Apply click handler to modal launch button
@@ -138,12 +139,20 @@ function LtiConsumerXBlock(runtime, element) {
                 return def.promise();
               };
 
-            if(askToSendUsername && askToSendEmail) {
+            if (askToSendUsername && askToSendFullName && askToSendEmail) {
+                msg = gettext("Click OK to have your username, full name, and e-mail address sent to a 3rd party application.\n\nClick Cancel to return to this page without sending your information.");
+            } else if(askToSendUsername && askToSendEmail) {
                 msg = gettext("Click OK to have your username and e-mail address sent to a 3rd party application.\n\nClick Cancel to return to this page without sending your information.");
+            } else if (askToSendUsername && askToSendFullName) {
+                msg = gettext("Click OK to have your username and full name sent to a 3rd party application.\n\nClick Cancel to return to this page without sending your information.");
+            } else if (askToSendFullName && askToSendEmail) {
+                msg = gettext("Click OK to have your full name and e-mail address sent to a 3rd party application.\n\nClick Cancel to return to this page without sending your information.");
             } else if (askToSendUsername) {
                 msg = gettext("Click OK to have your username sent to a 3rd party application.\n\nClick Cancel to return to this page without sending your information.");
             } else if (askToSendEmail) {
                 msg = gettext("Click OK to have your e-mail address sent to a 3rd party application.\n\nClick Cancel to return to this page without sending your information.");
+            } else if (askToSendFullName) {
+                msg = gettext("Click OK to have your full name sent to a 3rd party application.\n\nClick Cancel to return to this page without sending your information.");
             } else {
                 window.open(destination);
             }
