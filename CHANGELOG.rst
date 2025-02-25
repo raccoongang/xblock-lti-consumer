@@ -16,6 +16,10 @@ Please See the `releases tab <https://github.com/openedx/xblock-lti-consumer/rel
 Unreleased
 ~~~~~~~~~~
 
+9.13.0 - 2025-02-25
+-------------------
+* Added ability to override launch URL on block for external LTI configurations.
+
 9.12.0 - 2024-11-14
 -------------------
 * Dropped support for Python 3.8 and added support for Python 3.12.

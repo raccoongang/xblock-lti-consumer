@@ -77,7 +77,7 @@ function LtiConsumerXBlockInitStudio(runtime, element) {
     function getFieldsToHideForLtiConfigType() {
         const configType = $(element).find('#xb-field-edit-config_type').val();
         const databaseConfigHiddenFields = lti1P1FieldList.concat(lti1P3FieldList);
-        const externalConfigHiddenFields = lti1P1FieldList.concat(lti1P3FieldList);
+        const externalConfigHiddenFields = lti1P1FieldList.concat(lti1P3FieldList).filter(item => item !== "lti_1p3_launch_url");
         const fieldsToHide = [];
 
         if (configType === "external") {
