@@ -16,6 +16,10 @@ Please See the `releases tab <https://github.com/openedx/xblock-lti-consumer/rel
 Unreleased
 ~~~~~~~~~~
 
+9.13.1 - 2025-02-26
+-------------------
+* Fixed taken lti launch url for external LTI configurations.
+
 9.13.0 - 2025-02-25
 -------------------
 * Added ability to override launch URL on block for external LTI configurations.
