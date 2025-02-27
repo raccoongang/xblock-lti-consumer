@@ -586,10 +586,12 @@ class LtiConfiguration(models.Model):
                 tool_keyset_url=self.lti_1p3_tool_keyset_url,
             )
         elif self.config_store == self.CONFIG_EXTERNAL:
+            block = compat.load_enough_xblock(self.location)
+
             consumer = consumer_class(
                 iss=get_lti_api_base(),
                 lti_oidc_url=self.external_config.get('lti_1p3_oidc_url'),
-                lti_launch_url=self.lti_1p3_launch_url or self.external_config.get('lti_1p3_launch_url'),
+                lti_launch_url=block.lti_1p3_launch_url or self.external_config.get('lti_1p3_launch_url'),
                 client_id=self.external_config.get('lti_1p3_client_id'),
                 # Deployment ID hardcoded to 1 since
                 # we're not using multi-tenancy.
