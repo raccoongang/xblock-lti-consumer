@@ -154,11 +154,13 @@ class TestLtiConfigurationModel(TestCase):
         LtiConfiguration.CONFIG_EXTERNAL,
     )
     @patch('lti_consumer.models.get_external_config_from_filter')
-    def test_lti_consumer_ags_enabled(self, config_store, filter_mock):
+    @patch('lti_consumer.models.external_multiple_launch_urls_enabled')
+    def test_lti_consumer_ags_enabled(self, config_store, external_multiple_launch_urls_enabled_mock, filter_mock):
         """
         Check if LTI AGS is properly included when block is graded.
         """
         filter_mock.return_value = {'lti_advantage_ags_mode': 'programmatic'}
+        external_multiple_launch_urls_enabled_mock.return_value = False
         config = self._get_1p3_config(
             config_store=config_store,
             lti_advantage_ags_mode='programmatic'
@@ -207,10 +209,12 @@ class TestLtiConfigurationModel(TestCase):
         LtiConfiguration.CONFIG_EXTERNAL,
     )
     @patch('lti_consumer.models.get_external_config_from_filter')
-    def test_lti_consumer_ags_declarative(self, config_store, filter_mock):
+    @patch('lti_consumer.models.external_multiple_launch_urls_enabled')
+    def test_lti_consumer_ags_declarative(self, config_store, external_multiple_launch_urls_enabled, filter_mock):
         """
         Check that a LineItem is created if AGS is set to the declarative mode.
         """
+        external_multiple_launch_urls_enabled.return_value = False
         filter_mock.return_value = {'lti_advantage_ags_mode': 'declarative'}
         self.xblock.lti_advantage_ags_mode = 'declarative'
 
@@ -246,11 +250,13 @@ class TestLtiConfigurationModel(TestCase):
         LtiConfiguration.CONFIG_EXTERNAL,
     )
     @patch('lti_consumer.models.get_external_config_from_filter')
-    def test_lti_consumer_deep_linking_enabled(self, config_store, filter_mock):
+    @patch('lti_consumer.models.external_multiple_launch_urls_enabled')
+    def test_lti_consumer_deep_linking_enabled(self, config_store, external_multiple_launch_urls_enabled, filter_mock):
         """
         Check if LTI DL is properly instanced when configured.
         """
         filter_mock.return_value = {'lti_advantage_deep_linking_enabled': True}
+        external_multiple_launch_urls_enabled.return_value = False
         config = self._get_1p3_config(
             config_store=config_store,
             lti_advantage_deep_linking_enabled=True
