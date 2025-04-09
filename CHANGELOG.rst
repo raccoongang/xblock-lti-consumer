@@ -16,6 +16,12 @@ Please See the `releases tab <https://github.com/openedx/xblock-lti-consumer/rel
 Unreleased
 ~~~~~~~~~~
 
+9.13.5 - 2025-04-04
+-------------------
+* Add new flag `lti_consumer.enable_external_multiple_launch_urls`.
+* Update logic for retrieving `lti_1p3_launch_url` from `LtiConfiguration` model.
+* Make `lti_1p3_launch_url` field visible in studio settings when the feature course flag is enabled.
+
 9.13.4 - 2025-03-21
 -------------------
 * fix: update tests after pyjwt version upgrade
