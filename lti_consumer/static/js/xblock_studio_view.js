@@ -85,7 +85,8 @@ function LtiConsumerXBlockInitStudio(runtime, element, data) {
             externalConfigHiddenFields.forEach(function (field) {
                 fieldsToHide.push(field);
             })
-            if(data.EXTERNAL_MULTIPLE_LAUNCH_URLS_ENABLED) {
+            // Conditionally show the LTI 1.3 launch URL field if external multiple launch URLs are enabled.
+            if (data.EXTERNAL_MULTIPLE_LAUNCH_URLS_ENABLED) {
                 const index = fieldsToHide.indexOf("lti_1p3_launch_url");
                 if (index > -1) {
                     fieldsToHide.splice(index, 1);

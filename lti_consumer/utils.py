@@ -233,8 +233,13 @@ def database_config_enabled(course_key):
 
 def external_multiple_launch_urls_enabled(course_key):
     """
-    Return whether the lti_consumer.enable_external_multiple_launch_urls WaffleFlag is enabled. Return True if it is
+    Check if the external multiple launch URLs feature is enabled.
+
+    Return whether the `lti_consumer.enable_external_multiple_launch_urls WaffleFlag` is enabled. Return True if it is
     enabled; return False if it is not enabled.
+
+    Arguments:
+        course_key (opaque_keys.edx.locator.CourseLocator): Course Key
     """
     return get_external_multiple_launch_urls_waffle_flag().is_enabled(course_key)
 

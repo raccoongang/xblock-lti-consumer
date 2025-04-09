@@ -93,7 +93,7 @@ def get_database_config_waffle_flag():
 
 def get_external_multiple_launch_urls_waffle_flag():
     """
-    Import and return Waffle flag for enabling multiple external launch URLs in LTI configurations.
+    Import and return Waffle flag for enabling multiple launch URLs with the external LTI configurations.
     """
     # pylint: disable=import-error,import-outside-toplevel
     from openedx.core.djangoapps.waffle_utils import CourseWaffleFlag

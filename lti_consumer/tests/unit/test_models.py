@@ -545,8 +545,11 @@ class TestLtiConfigurationModel(TestCase):
         filter_mock
     ):
         """
-        Test that the external LTI consumer returns the launch URL from the block
-        if the external_multiple_launch_urls_enabled flag is set to True.
+        Verify that the external LTI consumer uses the block's launch URL when multiple launch URLs are enabled.
+
+        When the `external_multiple_launch_urls_enabled` flag is True, the consumer's
+        `launch_url` should be set to the `lti_1p3_launch_ur`l` from the loaded block rather than
+        the default URL provided by the external configuration.
         """
         external_multiple_launch_urls_enabled.return_value = True
         filter_mock.return_value = {
